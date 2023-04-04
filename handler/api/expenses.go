@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
 	"vandesar/entity"
@@ -301,7 +301,7 @@ func (p *ExpensesAPI) UpdatePrive(w http.ResponseWriter, r *http.Request) {
 		Notes:  prive.Notes,
 	})
 	if err != nil {
-		fmt.Println(err)
+		// fmt.Println(err)
 		WriteJSON(w, http.StatusInternalServerError, entity.NewErrorResponse("error internal server"))
 		return
 	}

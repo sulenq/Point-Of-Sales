@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	// "fmt"
 	"vandesar/entity"
 
 	"gorm.io/gorm"
@@ -89,8 +90,15 @@ func (r *UserRepository) GetCashierByUsername(ctx context.Context, username stri
 	if err != nil {
 		return entity.Cashier{}, err
 	}
+	r.db.Model(res).Where("username = ?", username).Update("online", true)
+	// fmt.Println("repo", res.Online)
 
 	return res, nil
+}
+
+func (r *UserRepository) Badalakingkong(ctx context.Context, id uint) error {
+	err := r.db.Table("cashiers").Where("id", id).Update("online", false).Error
+	return err
 }
 
 func (r *UserRepository) CreateCashier(ctx context.Context, user entity.Cashier) (entity.Cashier, error) {

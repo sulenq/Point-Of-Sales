@@ -163,20 +163,15 @@ func (p *TransactionAPI) UpdateTransactionDebt(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	products, err := p.transactionService.UpdateTransDebt(entity.UpdateTrans{
-		Debt:   product.Debt,
-		Status: product.Status,
-		Money:  product.Money,
-	}, uint(idInt))
+	err = p.transactionService.UpdateTransDebt(product, uint(idInt))
 	if err != nil {
 		WriteJSON(w, http.StatusInternalServerError, entity.NewErrorResponse("error internal server"))
 		return
 	}
 
 	response := map[string]any{
-		"user_id":        adminIdUint,
-		"transaction_id": products.ID,
-		"message":        "success update debt transaction",
+		"user_id": adminIdUint,
+		"message": "success update debt transaction",
 	}
 
 	WriteJSON(w, http.StatusOK, response)
@@ -207,6 +202,27 @@ func (p *TransactionAPI) DeleteTransaction(w http.ResponseWriter, r *http.Reques
 		"user_id":    adminIdUint,
 		"product_id": prodID,
 		"message":    "success delete product",
+	}
+
+	WriteJSON(w, http.StatusOK, response)
+}
+
+func (p *UserAPI) Badalacoro(w http.ResponseWriter, r *http.Request) {
+	reqcrot := entity.Transaction{}
+	adminIdUint := r.Context().Value("id").(uint)
+	if adminIdUint == 0 {
+		WriteJSON(w, http.StatusBadRequest, entity.NewErrorResponse("invalid user id"))
+		return
+	}
+
+	err := p.userService.Badalacoro(r.Context(), uint(adminIdUint), reqcrot.Notes)
+	if err != nil {
+		WriteJSON(w, http.StatusInternalServerError, entity.NewErrorResponse("error internal server"))
+		return
+	}
+
+	response := map[string]any{
+		"message": "jadilah terupdate",
 	}
 
 	WriteJSON(w, http.StatusOK, response)

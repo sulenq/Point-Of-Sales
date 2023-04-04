@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"strconv"
 	"vandesar/entity"
@@ -120,7 +120,7 @@ func (p *ProductAPI) CreateNewProduct(w http.ResponseWriter, r *http.Request) {
 		"message":    "success create new product",
 	}
 
-	fmt.Println(prod)
+	// fmt.Println(prod)
 
 	WriteJSON(w, http.StatusCreated, response)
 }

@@ -3,7 +3,8 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
+
+	// "fmt"
 	"vandesar/entity"
 	"vandesar/repository"
 )
@@ -75,7 +76,7 @@ func (s *ExpensesService) UpdatePrive(ctx context.Context, prive entity.Prive) (
 	}
 
 	if existingPrive.UserID != prive.UserID {
-		fmt.Println(existingPrive.UserID, prive.UserID)
+		// fmt.Println(existingPrive.UserID, prive.UserID)
 		return entity.Prive{}, errors.New("you are not allowed to update this prive")
 	}
 

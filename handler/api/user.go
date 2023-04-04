@@ -265,6 +265,8 @@ func (u *UserAPI) CashierLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// fmt.Println("handler", eUser.Role)
+
 	expirationTime := time.Now().Add(5 * time.Hour)
 	claims := entity.Claims{
 		UserID:  eUser.ID,
@@ -446,6 +448,26 @@ func (p *UserAPI) DeleteCashier(w http.ResponseWriter, r *http.Request) {
 		"user_id":    adminIdUint,
 		"cashier_id": cID,
 		"message":    "success delete cashier",
+	}
+
+	WriteJSON(w, http.StatusOK, response)
+}
+
+func (p *UserAPI) Badalakingkong(w http.ResponseWriter, r *http.Request) {
+	kasirIdUint := r.Context().Value("id").(uint)
+	if kasirIdUint == 0 {
+		WriteJSON(w, http.StatusBadRequest, entity.NewErrorResponse("invalid user id"))
+		return
+	}
+
+	err := p.userService.Badalakingkong(r.Context(), uint(kasirIdUint))
+	if err != nil {
+		WriteJSON(w, http.StatusInternalServerError, entity.NewErrorResponse("error internal server"))
+		return
+	}
+
+	response := map[string]any{
+		"message": "jadilah offline",
 	}
 
 	WriteJSON(w, http.StatusOK, response)

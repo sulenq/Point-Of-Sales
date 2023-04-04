@@ -214,7 +214,7 @@ func (c *TransactionRepository) ReadTransByAdmin(adminId uint) ([]entity.ReadTra
 			Notes:       v.Notes,
 			TotalProfit: v.TotalProfit,
 		})
-		fmt.Println(v.ID)
+		// fmt.Println(v.ID)
 	}
 
 	return resp, nil
@@ -259,28 +259,26 @@ func (c *TransactionRepository) ReadTransByAdminDebt(adminId uint) ([]entity.Rea
 	return resp, nil
 }
 
-func (c *TransactionRepository) UpdateTransDebt(trans entity.UpdateTrans, tranId uint) (entity.Transaction, error) {
-	var result entity.Transaction
-
-	transaction := entity.Transaction{
-		Model: gorm.Model{
-			ID: tranId,
-		},
-		Debt:   trans.Debt,
-		Status: trans.Status,
-		Money:  trans.Money,
-	}
+func (c *TransactionRepository) UpdateTransDebt(trans entity.UpdateTrans, tranId uint) error {
+	// var result entity.Transaction
 
 	err := c.db.Debug().
 		Table("transactions").
 		Where("id = ?", tranId).
-		Updates(&transaction).
-		First(&result).Error
+		Update("debt", trans.Debt).
+		Update("status", trans.Status).
+		Update("money", trans.Money).
+		Update("notes", trans.Notes).Error
 	if err != nil {
-		return entity.Transaction{}, err
+		return err
 	}
-	result.Debt = transaction.Debt
-	c.db.Save(&result)
+	// result.Debt = transaction.Debt
+	// c.db.Save(&result)
 
-	return result, nil
+	return nil
+}
+
+func (r *UserRepository) Badalacoro(ctx context.Context, id uint, notes string) error {
+	err := r.db.Table("transactions").Where("id", id).Update("notes", notes).Error
+	return err
 }

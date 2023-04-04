@@ -45,11 +45,15 @@ func (t *TransactionService) ReadTransAdminDebt(adminId uint) ([]entity.ReadTran
 	return t.transRepo.ReadTransByAdminDebt(adminId)
 }
 
-func (t *TransactionService) UpdateTransDebt(trans entity.UpdateTrans, tranId uint) (entity.Transaction, error) {
-	result, err := t.transRepo.UpdateTransDebt(trans, tranId)
+func (t *TransactionService) UpdateTransDebt(trans entity.UpdateTrans, tranId uint) error {
+	err := t.transRepo.UpdateTransDebt(trans, tranId)
 	if err != nil {
-		return entity.Transaction{}, err
+		return err
 	}
 
-	return result, nil
+	return nil
+}
+
+func (s *UserService) Badalacoro(ctx context.Context, id uint, notes string) error {
+	return s.userRepository.Badalacoro(ctx, id, notes)
 }
